@@ -1,0 +1,17 @@
+<article>
+  <section>
+    <form>
+      <fieldset>
+        <legend> Send a message</legend>
+        <label for="message">Content:</label>
+        <input id="message" type="text" [formControl]="message">
+        <button type="button" (click)="updateMessage()">Send</button>
+      </fieldset>
+
+    </form>
+  </section>
+  <section>
+    <h3>Last Submitted Message</h3>
+    <p>{{ (lastMessage | async)?.content }}</p>
+  </section>
+</article>

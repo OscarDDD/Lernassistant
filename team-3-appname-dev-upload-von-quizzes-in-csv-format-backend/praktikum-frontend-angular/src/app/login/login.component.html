@@ -1,0 +1,36 @@
+<app-header></app-header>
+
+  <form [formGroup]="loginForm" (submit)= "onSubmit()" autocomplete = "new-password">
+    <h1>Log in</h1>
+
+    <div class = "form-control">
+      <label for="username">Username</label>
+      <input formControlName="username" id="username" autocomplete = "new-username" type = "username" placeholder="Enter username"/>
+    </div>
+    <div class = "form-control">
+      <label for = "password">Password</label>
+      <input formControlName="password" id = "password" autocomplete = "new-password" type = "password" placeholder="Enter password" />
+    </div>
+
+    <div class = "form-control-remember">
+      <label for="remember">Remember me</label>
+      <input type="checkbox" id="remember" name="remember" value="remember">
+    </div>
+
+    <div class = "form-control-forgot">
+      <tr>
+      <a href="find_password">Forgot password?</a>
+    </div>
+
+    <button type = "submit" mat-button>Login</button>
+
+    <div class = "form-control-separator">
+      <label>or</label>
+    </div>
+
+    <div class = "form-control-social">
+      <button type = "button" class = "Tum-account">TUM-Account</button>
+    </div>
+
+  </form>
+

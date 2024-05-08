@@ -1,0 +1,93 @@
+@mixin focus{
+  &:focus{
+    outline: 2px;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+  }
+}
+
+form{
+  max-width:400px;
+  margin: 80px auto;
+  padding: 16px-16px-24px;
+  box-shadow:0-2px-32px rgba(0,0,0,0.15);
+  border-radius: 4px;
+
+
+  h1{
+    margin-top: 0;
+    color:#555;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .form-control{
+    margin-bottom: 16px;
+    input,
+    label{
+      display: block;
+    }
+
+    label{
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    input{
+      padding: 8px;
+      height: 35px;
+      border-radius: 4px;
+      width: 100%;
+      border: 2px solid #ccc;
+      background-color: #f9f9f9;
+    }
+  }
+
+  button{
+    padding: 8px 24px;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 1.2rem;
+    @include focus;
+  }
+
+  blue{
+    background-color: cornflowerblue;
+  }
+  darkblue{
+    color: darkblue;
+  }
+
+  .form-control-registry{
+    margin-top: 10px;
+    color:#555;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #ccc;
+  }
+  .form-control-forgot{
+    margin-top: 10px;
+    color: cornflowerblue;
+    padding-bottom: 4px;
+  }
+  .form-control-remember{
+    margin-top: 10px;
+    color:#555;
+    padding-bottom: 4px;
+  }
+
+  .form-control-separator{
+    margin-top: 10px;
+    color:#555;
+    padding-bottom: 4px;
+    label{
+      font-size: large;
+      font-weight: bold;
+      margin-left: 190px;
+    }
+  }
+  .form-control-social{
+    margin-top: 10px;
+    color:#555;
+    padding-bottom: 4px;
+  }
+}

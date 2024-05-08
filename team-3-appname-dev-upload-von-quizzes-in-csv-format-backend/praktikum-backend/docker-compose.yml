@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:16.2-alpine
+    container_name: postgres_db
+    ports:
+      - "5442:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: helloworld

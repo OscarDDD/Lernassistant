@@ -1,0 +1,60 @@
+stages:
+  - build
+  - dockerize
+  - deploy
+
+build-job:
+  stage: build
+  image: timbru31/java-node:21-jdk-20
+  cache:
+    key:
+      files:
+        - praktikum-frontend-angular/package-lock.json
+    paths:
+      - praktikum-frontend-angular/.npm/
+  script:
+    - cd praktikum-frontend-angular
+    - npm install --cache .npm --prefer-offline
+    - npm run build
+    - mkdir -p ../praktikum-backend/src/main/resources/static
+    - mv dist/praktikum-frontend-angular/browser/* ../praktikum-backend/src/main/resources/static/
+    - cd ../praktikum-backend
+    - chmod +x ./mvnw
+    - ./mvnw install -Dmaven.test.skip=true
+
+  artifacts:
+    paths:
+      - praktikum-backend/target/
+      - praktikum-backend/Dockerfile
+    when: on_success
+    expire_in: 30 days
+
+build and push docker images:
+  stage: dockerize
+  variables:
+    AWS_DEFAULT_REGION: eu-central-1
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    -  mkdir -p /kaniko/.docker
+    -  echo "{\"credsStore\":\"ecr-login\"}" > /kaniko/.docker/config.json
+    -  /kaniko/executor
+      --context "${CI_PROJECT_DIR}/praktikum-backend"
+      --dockerfile "${CI_PROJECT_DIR}/praktikum-backend/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID}"
+
+deployToAws:
+   stage: deploy
+   image: alpine
+   when: manual
+   script:
+     - cd deployment
+     - echo "${EC2_KEY}" > ec2key.pem
+     - chmod 600 ec2key.pem
+     - sed -i "s|VAR_IMAGE_NAME|${CI_REGISTRY_IMAGE}:${CI_PIPELINE_ID}|" docker-compose.yml
+     - apk update
+     - apk add openssh-client
+     - "scp -i ec2key.pem -o StrictHostKeyChecking=no docker-compose.yml ec2-user@${EC2_ADDRESS}:."
+     - ssh -o StrictHostKeyChecking=no ec2-user@${EC2_ADDRESS} -i ec2key.pem "docker compose up -d"
+    

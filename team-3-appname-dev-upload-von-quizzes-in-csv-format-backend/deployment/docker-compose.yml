@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:16.2-alpine
+    container_name: postgres_db
+    ports:
+      - "5442:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: helloworld
+
+    networks:
+      - appnetwork
+    volumes:
+      - /db_data:/var/lib/postgresql/data
+  app:
+    image: VAR_IMAGE_NAME
+    container_name: java_app
+    ports:
+      - "80:8080"
+    links:
+      - db
+    networks:
+      - appnetwork
+networks:
+  appnetwork:
+    driver: bridge
